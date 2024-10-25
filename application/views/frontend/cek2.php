@@ -74,8 +74,8 @@
     <tr>
         <td>
             <input type="checkbox" class="bill-checkbox" 
-                   data-amount="<?= $subtotal ?>" 
-                   <?= $isPaid ? 'disabled' : 'checked' ?> 
+                    data-amount="<?= $subtotal ?>"  data-inf="<?= $data->invoice ?>" 
+                   <?= $isPaid ? 'disabled' : '' ?> 
                    <?= $isPaid ? 'readonly' : '' ?> />
         </td>
         <td><?= indo_month($data->month) ?> <?= date('Y') ?></td>
@@ -97,7 +97,7 @@
 </tbody>
 
                                         </table>
-                                        <input type="hidden" id="totaldisplay" value="<?= $total ?>">
+                                        <input type="hidden" id="totaldisplay" value="">
                                     <?php } else { ?>
                                         <div class="alert alert-danger text-center" role="alert">
                                             Data Tagihan belum tersedia
@@ -128,8 +128,8 @@
                                      
                                         <div class="col-md-6">
     <div class="form-group">
-        <label for="invoice">No. Transaksi</label>
-        <?php $invoice = $this->input->post('invoice'); // Mengambil nomor invoice dari input POST ?>
+        <label for="invoice">invoice</label>
+        <?php $invoice = $this->input->post('no_services'); // Mengambil nomor invoice dari input POST ?>
         <input type="text" class="form-control" name="invoice" id="invoice" value="<?= htmlspecialchars($invoice, ENT_QUOTES, 'UTF-8'); ?>" readonly>
     </div>
 </div>                                        </div>
@@ -208,6 +208,8 @@ $(document).ready(function() {
             count++;
         });
         $('#totalbayar').text(indo_currency(total));
+        $('#totaldisplay').val(total);
+        
         $('#jumlah_item').val(count);
     }
 
@@ -232,8 +234,10 @@ $('#btnSimpanTransaksi').on('click', function(e) {
 
     // Mengambil data yang diperlukan dari form dan tabel
     let checkedItems = [];
+    let ceck = [];
     $('.bill-checkbox:checked').each(function() {
         checkedItems.push($(this).data('amount'));
+        ceck.push($(this).data('inf'));
     });
 
     if (checkedItems.length === 0) {
@@ -246,6 +250,7 @@ $('#btnSimpanTransaksi').on('click', function(e) {
         invoice: $('#invoice').val(),           // Nomor Transaksi
         total: $('#totaldisplay').val(),            // Total yang ditampilkan
         selectedBills: checkedItems,                // Tagihan yang dipilih
+        selectedinf: ceck,                // Tagihan yang dipilih
         name: $('#name').val(),                      // Nama pelanggan
         address: $('#address').val(),                // Alamat pelanggan
         no_services: $('#no_services').val(),        // ID pelanggan

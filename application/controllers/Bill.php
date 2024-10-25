@@ -72,7 +72,7 @@ class Bill extends CI_Controller
                         'year' => $year,
                         'status' => 'BELUM BAYAR',
                         'created' => time(), // Current timestamp
-                        'date_payment' => date(),
+                        'date_payment' => date('Y-m-d'),
                     ];
         
                     $this->db->insert('invoice', $invoice_data);
